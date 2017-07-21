@@ -1,27 +1,10 @@
 // Testing our JS
 console.log("Up and running!");
 
-// Our empty selected cards array for cards that are selected
+// Our empty array for cards that are selected
 var cardsInPlay = [];
 
-//OLD CODE THAT WE DON'T NEED ANYMORE! Leaving it here for the moment until I have the new stuff written
-
-/*
-
-var cards = ["queen", "queen", "king", "king"];
-
-var cardOne = cards[0];
-var cardTwo = cards[2];
-
-cardsInPlay.push(cardOne);
-console.log("User flipped " + cardOne);
-
-cardsInPlay.push(cardTwo);
-console.log("User flipped " + cardTwo);
-*/
-
-//The action that the cards will take when they are selected by the user
-
+// Object array containing our cards and their properties
 var cards = [
 	{
 		rank: "Queen",
@@ -44,18 +27,41 @@ var cards = [
 		cardImage: "images/king-of-diamonds.png"
 	}
 ]
+//flip card function
+var flipCard = function () {
+	var cardId = this.getAttribute("data-id");
+    console.log("User flipped " + cardId);
 
-var flipCard = function (cardId) {
-	cardsInPlay.push(cards[cardId].rank);
-	console.log("User flipped " + cards[cardId].rank);
-	console.log("User flipped " + cards[cardId].suit);
-	console.log("User flipped " + cards[cardId].cardImage);
-		if (cardsInPlay.length === 2) {
-			if (cardsInPlay[0] === cardsInPlay[1]) {
+    console.log(cards[cardId].cardImage);
+
+    console.log(cards[cardId].suit);
+
+    cardsInPlay.push(cards[cardId].rank);
+
+    this.setAttribute('src', cards[cardId].cardImage);
+
+    if (cardsInPlay.length === 2){
+    	if (cardsInPlay[0] === cardsInPlay[1]) {
 				alert("You found a match!");
-			} else {alert("Sorry, try again.");}
+			} else { alert("Sorry, try again.");
 		}
+		cardsInPlay = [];
 	}
+};
 
-flipCard(0);
-flipCard(2);
+//game board function
+var createBoard = function() {
+	for (var i = 0; i < cards.length; i++) {
+
+		var cardElement = document.createElement("img");
+
+			cardElement.setAttribute("src", "images/back.png");
+			cardElement.setAttribute("data-id", i);
+			cardElement.addEventListener("click", flipCard);
+
+    	document.getElementById('game-board').appendChild(cardElement);
+}
+}
+
+//making the board
+createBoard();
